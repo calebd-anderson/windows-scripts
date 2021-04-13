@@ -50,7 +50,7 @@ echo.
 echo [32m---System File Check---[0m (CTRL^+C to quit)
 PAUSE
 sfc /scannow
+echo.
 REM dism /online /cleanup-image /startcomponentcleanup
-REM could use ::
-REM C:\Users\***REMOVED***\AppData\Locallow\sun\java\Deployment\cache
+echo.
 PAUSE
