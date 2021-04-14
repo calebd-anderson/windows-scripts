@@ -1,9 +1,11 @@
 @ECHO OFF
 cls
-::ask user for drive letter
-echo [32mThis program unmounts a volume at the drive letter of your choice.[0m
+:: introduce the program
+echo [32mThis program unmounts a volume at the drive letter of your choice. Here is a list of attached storage devices:[0m
 echo.
-set /p _drive=[36mEnter the drive letter you wish to forcefully unmount ('X'):[0m 
+wmic logicaldisk get deviceid, volumename, description
+::ask user for drive letter
+set /p _drive=[36mEnter the drive letter you wish to disconnect ('X'):[0m 
 SET _drive=%_drive%:\
 ::parse mountvol for the line the drive is on
 FOR /F %%G IN ('mountvol ^| findstr /n %_drive%') DO SET _lineStr=%%G 
@@ -22,14 +24,20 @@ echo [36mPress any key to unmount the volume of[0m [33m%_drive%[0m [31m(CTR
 echo [31mUnmounting[0m [33m%_drive%[0m [31m. . .[0m
 mountvol %_drive% /p
 echo [33m%_drive%[0m [31mwas unmounted . . .[0m
-echo It is now safe to disconnect the drive.
+echo Try to eject the drive now.
 :: ask user to enter any key to re-mount the volume
 echo.
 echo [36mPress any key to re-mount the volume of[0m [33m%_drive%[0m [31m(CTRL^+C to terminate) [36m. . .[0m & PAUSE >NUL
 echo [31mRe-mounting[0m [33m%_drive%[0m [31m. . .[0m
 ::re-mount volume and pause for 3 seconds
+:LoopStart
 mountvol %_drive% %_vol%
+echo Waiting for drive to come back . . .
 timeout /t 3 /nobreak >NUL
-echo [33m%_drive%[0m [31mwas re-mounted.[0m
+echo.
+set /p _end=Was [33m%_drive%[0m[31m re-mounted?[0m (y, n): 
+IF /I NOT "%_end%" == "y" GOTO LoopStart
+echo.
 echo Good Bye.
+echo.
 pause
