@@ -15,6 +15,11 @@ SET /A _lineNum = %_lineStr:~0,-2% - 1
 ::parse volume from mountvol
 FOR /F "tokens=2" %%G IN ('mountvol ^| findstr /n ^^^^ ^| findstr "^%_lineNum%"') DO SET _vol=%%G
 echo.
+IF NOT DEFINED _vol (
+ECHO The drive letter does not have a mount point. Bye.
+PAUSE
+EXIT /b
+)
 ::show the result 
 echo %_vol% | clip
 echo [32mThe volume for[32m:[0m[0m [33m%_drive%[0m [33m%_vol%[0m [32mwas copied to the clipboard.[0m
@@ -33,7 +38,6 @@ echo [31mRe-mounting[0m [33m%_drive%[0m [31m. . .[0m
 ::re-mount volume and pause for 3 seconds
 :LoopStart
 mountvol %_drive% %_vol%
-echo Waiting for drive to come back . . .
 for /l %%f in (1 1 5) do (
 CALL :drawProgressBar \
 CALL :drawProgressBar /
@@ -55,7 +59,7 @@ goto :EOF
 :drawProgressBar
 setlocal enableextensions enabledelayedexpansion
 for /f %%a in ('copy "%~f0" nul /z') do set "pb.cr=%%a"
-<nul set /p "=... Please Wait [ %1 ] ... !pb.cr!"
+<nul set /p "=. . . Waiting for drive to come back . . . [ %1 ] !pb.cr!"
 call :pause 125
 endlocal
 GOTO :EOF
