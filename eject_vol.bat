@@ -1,3 +1,4 @@
+@if (@CodeSection == @Batch) @then
 @ECHO OFF
 cls
 :: introduce the program
@@ -33,7 +34,11 @@ echo [31mRe-mounting[0m [33m%_drive%[0m [31m. . .[0m
 :LoopStart
 mountvol %_drive% %_vol%
 echo Waiting for drive to come back . . .
-timeout /t 3 /nobreak >NUL
+for /l %%f in (1 1 5) do (
+CALL :drawProgressBar \
+CALL :drawProgressBar /
+CALL :drawProgressBar -
+)
 echo.
 set /p _end=Was [33m%_drive%[0m[31m re-mounted?[0m (y, n): 
 IF /I NOT "%_end%" == "y" GOTO LoopStart
@@ -41,3 +46,19 @@ echo.
 echo Good Bye.
 echo.
 pause
+exit /b
+
+:pause <ms>
+cscript /nologo /e:JScript "%~f0" "%~1"
+goto :EOF
+
+:drawProgressBar
+setlocal enableextensions enabledelayedexpansion
+for /f %%a in ('copy "%~f0" nul /z') do set "pb.cr=%%a"
+<nul set /p "=... Please Wait [ %1 ] ... !pb.cr!"
+call :pause 125
+endlocal
+GOTO :EOF
+
+@end // end batch / begin JScript hybrid code
+WSH.Sleep(WSH.Arguments(0));
