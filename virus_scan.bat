@@ -27,7 +27,7 @@ call :ProgressMeter 40
 echo.
 echo [32m---Scan Temp---[0m
 "%ProgramFiles%\Windows Defender\MpCmdRun.exe" -Scan -ScanType 3 -File %localappdata%\Temp\
-call :ProgressMeter 50
+call :ProgressMeter 60
 
 echo.
 echo [32m---Scan email temp folders---[0m
