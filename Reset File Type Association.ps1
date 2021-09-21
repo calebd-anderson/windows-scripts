@@ -11,13 +11,13 @@ $key1 = Get-Item -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\
 $key2 = Get-Item -Path HKCU:\Software\Microsoft\Windows\Roaming\OpenWith\FileExts\$exten_type -ErrorAction SilentlyContinue
 $key3 = Get-Item -Path HKCU:\Software\Classes\$exten_type -ErrorAction SilentlyContinue
 $key4 = Get-Item -Path HKLM:\SOFTWARE\Classes\$exten_type -ErrorAction SilentlyContinue
-Add-Content "$env:USERPROFILE\desktop\extension_reset_log.txt" "-Registry paths to keys that will be deleted after carrying out the operation on the `"$exten_type`" extension:"
-Add-Content "$env:USERPROFILE\desktop\extension_reset_log.txt" $key1 
-Add-Content "$env:USERPROFILE\desktop\extension_reset_log.txt" $key2 
-Add-Content "$env:USERPROFILE\desktop\extension_reset_log.txt" $key3 
-Add-Content "$env:USERPROFILE\desktop\extension_reset_log.txt" $key4
+Add-Content C:\Users\$env:username\Desktop\extension_reset_log.txt "-Registry paths to keys that will be deleted after carrying out the operation on the `"$exten_type`" extension:"
+Add-Content C:\Users\$env:username\Desktop\extension_reset_log.txt $key1 
+Add-Content C:\Users\$env:username\Desktop\extension_reset_log.txt $key2 
+Add-Content C:\Users\$env:username\Desktop\extension_reset_log.txt $key3 
+Add-Content C:\Users\$env:username\Desktop\extension_reset_log.txt $key4 
 if ($open_log -eq 'y'){
-Invoke-Item "$env:USERPROFILE\desktop\extension_reset_log.txt"
+Invoke-Item C:\Users\$desktop\Desktop\extension_reset_log.txt
 }
 
 #query open regedit
