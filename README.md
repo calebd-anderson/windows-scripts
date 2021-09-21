@@ -1,0 +1,1 @@
+# cear-file-type-association
